@@ -46,7 +46,7 @@ public class InvocationManager implements Invocation {
      */
     @Override
     public InvocationManager setProcessors(List<Processor> processors) {
-        this.processorsMap.put(counter++, processors);
+        this.processorsMap.put(this.counter++, processors);
         return this;
     }
 
@@ -57,7 +57,7 @@ public class InvocationManager implements Invocation {
      */
     @Override
     public InvocationManager setExtractors(List<Extractor> extractors) {
-        this.extractorsMap.put(counter++, extractors);
+        this.extractorsMap.put(this.counter++, extractors);
         return this;
     }
 
@@ -67,44 +67,64 @@ public class InvocationManager implements Invocation {
      */
     @Override
     public CompleteResponse invoke() {
-        for (int i = 0; i < counter; i++) {
+        for (int i = 0; i < this.counter; i++) {
             System.out.println("about to start " + i + " iteration");
-            if (processorsMap.get(i) != null) {
-                for (Processor processor : processorsMap.get(i)) {
-                    if (processor.isMoreDataRequired()) {
-                        System.out.println("populate data for processor " + processor);
-                        processor.populateRequiredData(responseManager);
-                    }
-                    responses.add(processor.process());
-                    responseManager.manageRespones(responses);
-                }
-            } else if (extractorsMap.get(i) != null) {
-                List<Future<Response>> tempResponses = new ArrayList<>();
-                for (Extractor extractor : extractorsMap.get(i)) {
-                    if (extractor.isMoreDataRequired()) {
-                        System.out.println("populate data for extractor " + extractor);
-                        extractor.populateRequiredData(responseManager);
-                    }
-                    System.out.println("Exceuting extractor " + extractor);
-                    tempResponses.add(extractor.extract());
-                    System.out.println("Preparing Next extractor ");
-                }
-                addToResponseList(tempResponses);
-                responseManager.manageRespones(responses);
+            if (this.processorsMap.get(i) != null) {
+                invokeProcessors(i);
+            } else if (this.extractorsMap.get(i) != null) {
+                invokeExtractors(i);
             }
         }
-        return responseManager.getCompleteResponse();
+        return this.responseManager.getCompleteResponse();
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void clearPreviousInvocationData() {
+        this.counter = 0;
+        this.responses.clear();
+        this.processorsMap.clear();
+        this.extractorsMap.clear();
+        this.responseManager.clearResponsesMap();
+    }
+    
+    private void invokeExtractors(int i) {
+        List<Future<Response>> tempResponses = new ArrayList<>();
+        for (Extractor extractor : this.extractorsMap.get(i)) {
+            if (extractor.isMoreDataRequired()) {
+                System.out.println("populate data for extractor " + extractor);
+                extractor.populateRequiredData(this.responseManager);
+            }
+            System.out.println("Exceuting extractor " + extractor);
+            tempResponses.add(extractor.extract());
+            System.out.println("Preparing Next extractor ");
+        }
+        addToResponseList(tempResponses);
+        this.responseManager.manageRespones(this.responses);
+    }
+
+    private void invokeProcessors(int i) {
+        for (Processor processor : this.processorsMap.get(i)) {
+            if (processor.isMoreDataRequired()) {
+                System.out.println("populate data for processor " + processor);
+                processor.populateRequiredData(this.responseManager);
+            }
+            this.responses.add(processor.process());
+            this.responseManager.manageRespones(this.responses);
+        }
     }
 
     private void addToResponseList(List<Future<Response>> tempResponses) {
         try {
             System.out.println("waiting for List to realise");
             for (Future<Response> future : tempResponses) {
-                responses.add(future.get());
+                this.responses.add(future.get());
             }
         } catch (InterruptedException | ExecutionException ex) {
             Logger.getLogger(InvocationManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
 }

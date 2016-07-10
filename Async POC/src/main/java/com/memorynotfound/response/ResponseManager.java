@@ -40,4 +40,8 @@ public class ResponseManager {
         completeResponse.setPhoneResponse((PhoneProcessorResponse) responsesMap.get(PhoneProcessorResponse.class.getSimpleName()));
         return completeResponse;
     }
+    
+    public void clearResponsesMap(){
+        responsesMap.clear();
+    }
 }

@@ -21,5 +21,7 @@ public interface Invocation {
     InvocationManager setExtractors(List<Extractor> extractors);
 
     CompleteResponse invoke();
+    
+    void clearPreviousInvocationData();
 
 }
