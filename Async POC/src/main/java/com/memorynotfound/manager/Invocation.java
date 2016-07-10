@@ -5,7 +5,6 @@
  */
 package com.memorynotfound.manager;
 
-import com.memorynotfound.manager.InvocationManager;
 import com.memorynotfound.extractor.Extractor;
 import com.memorynotfound.processor.Processor;
 import com.memorynotfound.response.CompleteResponse;
@@ -17,11 +16,10 @@ import java.util.List;
  */
 public interface Invocation {
 
-    public InvocationManager setProcessors(List<Processor> processors);
+    InvocationManager setProcessors(List<Processor> processors);
 
-    public InvocationManager setExtractors(List<Extractor> extractors);
+    InvocationManager setExtractors(List<Extractor> extractors);
 
-    public CompleteResponse invoke();
+    CompleteResponse invoke();
 
-    public void invokeExtractors();
 }

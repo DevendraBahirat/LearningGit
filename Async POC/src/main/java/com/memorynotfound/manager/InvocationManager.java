@@ -8,7 +8,6 @@ package com.memorynotfound.manager;
 import com.memorynotfound.extractor.Extractor;
 import com.memorynotfound.processor.Processor;
 import com.memorynotfound.response.CompleteResponse;
-import com.memorynotfound.response.DataPropagator;
 import com.memorynotfound.response.Response;
 import com.memorynotfound.response.ResponseManager;
 import java.util.ArrayList;
@@ -40,20 +39,35 @@ public class InvocationManager implements Invocation {
 
     @Autowired
     private ResponseManager responseManager;
-    @Autowired
-    private DataPropagator dataPropagator;
 
+    /**
+     *
+     * @param processors
+     * @return
+     */
+    @Override
     public InvocationManager setProcessors(List<Processor> processors) {
         this.processorsMap.put(counter++, processors);
         return this;
     }
 
+    /**
+     *
+     * @param extractors
+     * @return
+     */
+    @Override
     public InvocationManager setExtractors(List<Extractor> extractors) {
         this.extractorsMap.put(counter++, extractors);
         this.extractors.addAll(extractors);
         return this;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public CompleteResponse invoke() {
         for (int i = 0; i < counter; i++) {
             System.out.println("about to start " + i + " iteration");
@@ -62,7 +76,7 @@ public class InvocationManager implements Invocation {
                 for (Processor processor : processorsMap.get(i)) {
                     if (processor.isMoreDataRequired()) {
                         System.out.println("populate data for processor " + processor);
-                        dataPropagator.populateDataForProcessors(processor, responseManager);
+                        processor.populateRequiredData(responseManager);
                     }
                     responses.add(processor.process());
                     responseManager.manageRespones(responses);
@@ -72,7 +86,7 @@ public class InvocationManager implements Invocation {
                 for (Extractor extractor : extractorsMap.get(i)) {
                     if (extractor.isMoreDataRequired()) {
                         System.out.println("populate data for extractor " + extractor);
-                        dataPropagator.populateDataForExtractors(extractor, responseManager);
+                        extractor.populateRequiredData(responseManager);
                     }
                     System.out.println("Exceuting extractor " + extractor);
                     tempResponses.add(extractor.extract());
@@ -96,15 +110,4 @@ public class InvocationManager implements Invocation {
         }
     }
 
-    public void invokeExtractors() {
-        for (Extractor extractor : extractors) {
-//            if (extractor.isMoreDataRequired()) {
-//                System.out.println("populate data for extractor " + extractor);
-//                dataPropagator.populateDataForExtractors(extractor, responseManager);
-//            }
-            System.out.println("Exceuting extractor " + extractor);
-            extractor.extract();
-            System.out.println("Preparing Next extractor ");
-        }
-    }
 }

@@ -6,6 +6,8 @@
 package com.memorynotfound.response;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,66 +17,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseManager {
 
-    AccountExtractorResponse accountExtractorResponse;
-    PartyExtractorResponse partyExtractorResponse;
-    DeviceProcessorResponse deviceProcessorResponse;
-    PhoneProcessorResponse phoneProcessorResponse;
-
+    private final Map<String, Response> responsesMap = new ConcurrentHashMap<>();
+    
     public AccountExtractorResponse getAccountExtractorResponse() {
-        return accountExtractorResponse;
-    }
-
-    public void setAccountExtractorResponse(AccountExtractorResponse accountExtractorResponse) {
-        this.accountExtractorResponse = accountExtractorResponse;
+        return (AccountExtractorResponse) responsesMap.get(AccountExtractorResponse.class.getSimpleName());
     }
 
     public PartyExtractorResponse getPartyExtractorResponse() {
-        return partyExtractorResponse;
-    }
-
-    public void setPartyExtractorResponse(PartyExtractorResponse partyExtractorResponse) {
-        this.partyExtractorResponse = partyExtractorResponse;
+        return (PartyExtractorResponse) responsesMap.get(PartyExtractorResponse.class.getSimpleName());
     }
 
     public DeviceProcessorResponse getDeviceProcessorResponse() {
-        return deviceProcessorResponse;
-    }
-
-    public void setDeviceProcessorResponse(DeviceProcessorResponse deviceProcessorResponse) {
-        this.deviceProcessorResponse = deviceProcessorResponse;
+        return (DeviceProcessorResponse) responsesMap.get(DeviceProcessorResponse.class.getSimpleName());
     }
 
     public PhoneProcessorResponse getPhoneProcessorResponse() {
-        return phoneProcessorResponse;
-    }
-
-    public void setPhoneProcessorResponse(PhoneProcessorResponse phoneProcessorResponse) {
-        this.phoneProcessorResponse = phoneProcessorResponse;
+        return (PhoneProcessorResponse) responsesMap.get(PhoneProcessorResponse.class.getSimpleName());
     }
 
     public void manageRespones(List<Response> responses) {
         System.out.println("managing responses");
         if (!responses.isEmpty()) {
             for (Response response : responses) {
-                switch (response.getClass().getSimpleName()) {
-                    case "AccountExtractorResponse":
-                        accountExtractorResponse = (AccountExtractorResponse) response;
-                        break;
-                    case "PartyExtractorResponse":
-                        partyExtractorResponse = (PartyExtractorResponse) response;
-                        break;
-                    case "DeviceProcessorResponse":
-                        deviceProcessorResponse = (DeviceProcessorResponse) response;
-                        break;
-                    case "PhoneProcessorResponse":
-                        phoneProcessorResponse = (PhoneProcessorResponse) response;
-                        break;
-                }
+                responsesMap.put(response.getClass().getSimpleName(), response);
             }
         }
     }
 
     public CompleteResponse getCompleteResponse() {
-        return new CompleteResponse(accountExtractorResponse, deviceProcessorResponse, partyExtractorResponse, phoneProcessorResponse);
+        CompleteResponse completeResponse = new CompleteResponse(getAccountExtractorResponse(), getDeviceProcessorResponse(), getPartyExtractorResponse(), getPhoneProcessorResponse());
+        return completeResponse;
     }
 }

@@ -6,6 +6,7 @@
 package com.memorynotfound.processor;
 
 import com.memorynotfound.response.PhoneProcessorResponse;
+import com.memorynotfound.response.ResponseManager;
 
 /**
  *
@@ -20,10 +21,10 @@ public class PhoneProcessor implements Processor<PhoneProcessorResponse> {
         this.deviceId = deviceId;
         this.isMoreDataRequired = isMoreDataRequired;
     }
-    
+
     @Override
     public PhoneProcessorResponse process() {
-        return new PhoneProcessorResponse(deviceId*1111);
+        return new PhoneProcessorResponse(deviceId * 1111);
     }
 
     public Long getDeviceId() {
@@ -42,5 +43,12 @@ public class PhoneProcessor implements Processor<PhoneProcessorResponse> {
     public Boolean isMoreDataRequired() {
         return this.isMoreDataRequired;
     }
-    
+
+    @Override
+    public void populateRequiredData(ResponseManager responseManager) {
+        System.out.println("Populated data for processor " + this);
+        if (this.deviceId == null) {
+            this.deviceId = responseManager.getDeviceProcessorResponse().getDeviceId();
+        }
+    }
 }

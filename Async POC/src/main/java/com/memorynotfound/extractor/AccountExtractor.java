@@ -5,8 +5,8 @@
  */
 package com.memorynotfound.extractor;
 
-import com.memorynotfound.extractor.Extractor;
 import com.memorynotfound.response.AccountExtractorResponse;
+import com.memorynotfound.response.ResponseManager;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,5 +45,10 @@ public class AccountExtractor implements Extractor<AccountExtractorResponse> {
     public AccountExtractor setIsMoreDataRequired(Boolean isMoreDataRequired) {
         this.isMoreDataRequired = isMoreDataRequired;
         return this;
+    }
+
+    @Override
+    public void populateRequiredData(ResponseManager responseManager) {
+        System.out.println("Populated data for extractor " + this);
     }
 }

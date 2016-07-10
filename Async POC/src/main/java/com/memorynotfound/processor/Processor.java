@@ -6,6 +6,8 @@
 package com.memorynotfound.processor;
 
 import com.memorynotfound.response.Response;
+import com.memorynotfound.response.ResponseManager;
+import java.util.List;
 
 /**
  *
@@ -14,4 +16,5 @@ import com.memorynotfound.response.Response;
 public interface Processor<T extends Response> {
     T process();
     Boolean isMoreDataRequired();
+    void populateRequiredData(ResponseManager manager);
 }

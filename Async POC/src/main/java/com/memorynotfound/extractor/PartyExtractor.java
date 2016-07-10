@@ -6,6 +6,7 @@
 package com.memorynotfound.extractor;
 
 import com.memorynotfound.response.PartyExtractorResponse;
+import com.memorynotfound.response.ResponseManager;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,4 +45,8 @@ public class PartyExtractor implements Extractor<PartyExtractorResponse> {
         return new AsyncResult<>(new PartyExtractorResponse());
     }
 
+    @Override
+    public void populateRequiredData(ResponseManager responseManager) {
+        System.out.println("Populated data for extractor " + this);
+    }
 }

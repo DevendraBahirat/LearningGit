@@ -1,8 +1,6 @@
 package com.memorynotfound;
 
-import com.memorynotfound.extractor.AccountExtractor;
 import com.memorynotfound.extractor.Extractor;
-import com.memorynotfound.extractor.PartyExtractor;
 import com.memorynotfound.manager.ExtractorBeanManager;
 import com.memorynotfound.manager.InvocationManager;
 import com.memorynotfound.processor.DeviceProcessor;
@@ -15,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.concurrent.ExecutionException;
-import org.springframework.cglib.beans.BeanMap;
 
 public class Main {
 
@@ -65,8 +62,10 @@ public class Main {
         /**
          * feeding extractors and processors and then invoking them.
          */
+        Long strtTime = System.currentTimeMillis();
         CompleteResponse response = invocationManager.setExtractors(extractors).setProcessors(processors).invoke();
-
-        System.out.println("Response : " + response);
+        Long endTime = System.currentTimeMillis();
+        System.out.println("Execution Time : " + (endTime-strtTime));
+        System.out.println("Response : " + response.toString());
     }
 }

@@ -6,15 +6,18 @@
 package com.memorynotfound.extractor;
 
 import com.memorynotfound.response.Response;
+import com.memorynotfound.response.ResponseManager;
 import java.util.concurrent.Future;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Devendra Bahirat
+ * @param <T>
  */
 @Component
 public interface Extractor<T extends Response> {
     Future<T> extract();
     Boolean isMoreDataRequired();
+    void populateRequiredData(ResponseManager responseManager);
 }
