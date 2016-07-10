@@ -24,4 +24,9 @@ public class PartyExtractorResponse implements Response {
         this.partyId = partyId;
     }
 
+    @Override
+    public String toString() {
+        return "PartyExtractorResponse{" + "partyId=" + partyId + '}';
+    }
+
 }

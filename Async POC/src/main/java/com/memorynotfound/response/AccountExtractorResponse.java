@@ -23,4 +23,10 @@ public class AccountExtractorResponse implements Response {
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
+
+    @Override
+    public String toString() {
+        return "AccountExtractorResponse{" + "accountId=" + accountId + '}';
+    }
+    
 }

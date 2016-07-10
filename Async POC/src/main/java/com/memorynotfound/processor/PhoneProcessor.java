@@ -5,8 +5,11 @@
  */
 package com.memorynotfound.processor;
 
+import com.memorynotfound.response.DeviceProcessorResponse;
 import com.memorynotfound.response.PhoneProcessorResponse;
+import com.memorynotfound.response.Response;
 import com.memorynotfound.response.ResponseManager;
+import java.util.Map;
 
 /**
  *
@@ -47,8 +50,12 @@ public class PhoneProcessor implements Processor<PhoneProcessorResponse> {
     @Override
     public void populateRequiredData(ResponseManager responseManager) {
         System.out.println("Populated data for processor " + this);
+        Map<String, Response> responsesMap = responseManager.getResponsesMap();
         if (this.deviceId == null) {
-            this.deviceId = responseManager.getDeviceProcessorResponse().getDeviceId();
+            if (responsesMap.containsKey(DeviceProcessorResponse.class.getSimpleName())) {
+                DeviceProcessorResponse deviceResponse = (DeviceProcessorResponse) responsesMap.get(DeviceProcessorResponse.class.getSimpleName());
+                this.deviceId = deviceResponse.getDeviceId();
+            }
         }
     }
 }

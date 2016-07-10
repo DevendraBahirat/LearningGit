@@ -37,7 +37,7 @@ public class PartyExtractor implements Extractor<PartyExtractorResponse> {
     public Future<PartyExtractorResponse> extract() {
         try {
             System.out.println("Extracting PartyExtractorResponse");
-            Thread.sleep(1000);
+            Thread.sleep(10);
         } catch (InterruptedException ex) {
             Logger.getLogger(PartyExtractor.class.getName()).log(Level.SEVERE, null, ex);
         }

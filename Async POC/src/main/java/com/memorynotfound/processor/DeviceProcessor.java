@@ -5,9 +5,12 @@
  */
 package com.memorynotfound.processor;
 
+import com.memorynotfound.response.AccountExtractorResponse;
 import com.memorynotfound.response.DeviceProcessorResponse;
+import com.memorynotfound.response.PartyExtractorResponse;
+import com.memorynotfound.response.Response;
 import com.memorynotfound.response.ResponseManager;
-import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -58,11 +61,18 @@ public class DeviceProcessor implements Processor {
     @Override
     public void populateRequiredData(ResponseManager responseManager) {
         System.out.println("Populated data for processor " + this);
+        Map<String, Response> responsesMap = responseManager.getResponsesMap();
         if (this.accountId == null) {
-            this.accountId = responseManager.getAccountExtractorResponse().getAccountId();
+            if (responsesMap.containsKey(AccountExtractorResponse.class.getSimpleName())) {
+                AccountExtractorResponse accountResponse = (AccountExtractorResponse) responsesMap.get(AccountExtractorResponse.class.getSimpleName());
+                this.accountId = accountResponse.getAccountId();
+            }
         }
         if (this.partyId == null) {
-            this.partyId = responseManager.getPartyExtractorResponse().getPartyId();
+            if (responsesMap.containsKey(PartyExtractorResponse.class.getSimpleName())) {
+                PartyExtractorResponse partyResponse = (PartyExtractorResponse) responsesMap.get(PartyExtractorResponse.class.getSimpleName());
+                this.partyId = partyResponse.getPartyId();
+            }
         }
     }
 }

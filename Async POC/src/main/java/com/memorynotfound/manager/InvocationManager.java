@@ -33,7 +33,6 @@ public class InvocationManager implements Invocation {
 
     List<Response> responses = new ArrayList();
 
-    List<Extractor> extractors = new ArrayList<>();
     Map<Integer, List<Processor>> processorsMap = new HashMap();
     Map<Integer, List<Extractor>> extractorsMap = new ConcurrentHashMap<>();
 
@@ -59,7 +58,6 @@ public class InvocationManager implements Invocation {
     @Override
     public InvocationManager setExtractors(List<Extractor> extractors) {
         this.extractorsMap.put(counter++, extractors);
-        this.extractors.addAll(extractors);
         return this;
     }
 
@@ -71,7 +69,6 @@ public class InvocationManager implements Invocation {
     public CompleteResponse invoke() {
         for (int i = 0; i < counter; i++) {
             System.out.println("about to start " + i + " iteration");
-            responseManager.manageRespones(responses);
             if (processorsMap.get(i) != null) {
                 for (Processor processor : processorsMap.get(i)) {
                     if (processor.isMoreDataRequired()) {

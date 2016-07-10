@@ -15,6 +15,8 @@ public class CompleteResponse implements Response{
     PartyExtractorResponse partyResponse;
     PhoneProcessorResponse phoneResponse;
 
+    public CompleteResponse(){}
+    
     public CompleteResponse(AccountExtractorResponse accountResponse, DeviceProcessorResponse deviceResponse, PartyExtractorResponse partyResponse, PhoneProcessorResponse phoneResponse) {
         this.accountResponse = accountResponse;
         this.deviceResponse = deviceResponse;
@@ -52,6 +54,11 @@ public class CompleteResponse implements Response{
 
     public void setPhoneResponse(PhoneProcessorResponse phoneResponse) {
         this.phoneResponse = phoneResponse;
+    }
+
+    @Override
+    public String toString() {
+        return "CompleteResponse{" + "accountResponse=" + accountResponse + ", deviceResponse=" + deviceResponse + ", partyResponse=" + partyResponse + ", phoneResponse=" + phoneResponse + '}';
     }
     
     

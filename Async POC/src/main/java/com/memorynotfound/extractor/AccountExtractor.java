@@ -29,7 +29,7 @@ public class AccountExtractor implements Extractor<AccountExtractorResponse> {
         try {
             System.out.println("Extracting AccountExtractorResponse");
             System.out.println("Thread Name : " + Thread.currentThread().getName());
-            Thread.sleep(1000 * 10);
+            Thread.sleep(10);
         } catch (InterruptedException ex) {
             Logger.getLogger(AccountExtractor.class.getName()).log(Level.SEVERE, null, ex);
         }

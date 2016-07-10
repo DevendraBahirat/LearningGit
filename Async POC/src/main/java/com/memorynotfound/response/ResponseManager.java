@@ -19,20 +19,8 @@ public class ResponseManager {
 
     private final Map<String, Response> responsesMap = new ConcurrentHashMap<>();
     
-    public AccountExtractorResponse getAccountExtractorResponse() {
-        return (AccountExtractorResponse) responsesMap.get(AccountExtractorResponse.class.getSimpleName());
-    }
-
-    public PartyExtractorResponse getPartyExtractorResponse() {
-        return (PartyExtractorResponse) responsesMap.get(PartyExtractorResponse.class.getSimpleName());
-    }
-
-    public DeviceProcessorResponse getDeviceProcessorResponse() {
-        return (DeviceProcessorResponse) responsesMap.get(DeviceProcessorResponse.class.getSimpleName());
-    }
-
-    public PhoneProcessorResponse getPhoneProcessorResponse() {
-        return (PhoneProcessorResponse) responsesMap.get(PhoneProcessorResponse.class.getSimpleName());
+    public Map<String, Response> getResponsesMap() {
+        return responsesMap;
     }
 
     public void manageRespones(List<Response> responses) {
@@ -45,7 +33,11 @@ public class ResponseManager {
     }
 
     public CompleteResponse getCompleteResponse() {
-        CompleteResponse completeResponse = new CompleteResponse(getAccountExtractorResponse(), getDeviceProcessorResponse(), getPartyExtractorResponse(), getPhoneProcessorResponse());
+        CompleteResponse completeResponse = new CompleteResponse();
+        completeResponse.setAccountResponse((AccountExtractorResponse) responsesMap.get(AccountExtractorResponse.class.getSimpleName()));
+        completeResponse.setDeviceResponse((DeviceProcessorResponse) responsesMap.get(DeviceProcessorResponse.class.getSimpleName()));
+        completeResponse.setPartyResponse((PartyExtractorResponse) responsesMap.get(PartyExtractorResponse.class.getSimpleName()));
+        completeResponse.setPhoneResponse((PhoneProcessorResponse) responsesMap.get(PhoneProcessorResponse.class.getSimpleName()));
         return completeResponse;
     }
 }

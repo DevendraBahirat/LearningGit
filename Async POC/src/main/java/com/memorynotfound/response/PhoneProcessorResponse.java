@@ -24,5 +24,10 @@ public class PhoneProcessorResponse implements Response {
     public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneProcessorResponse{" + "phoneNumber=" + phoneNumber + '}';
+    }
     
 }

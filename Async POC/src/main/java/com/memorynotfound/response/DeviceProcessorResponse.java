@@ -24,5 +24,10 @@ public class DeviceProcessorResponse implements Response {
     public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceProcessorResponse{" + "deviceId=" + deviceId + '}';
+    }
     
 }

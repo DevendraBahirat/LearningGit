@@ -26,8 +26,8 @@ public class Main {
         * the async method to run in main thread
         * making them sequential.
         **/
-        //MailSender mailSender = new MailSender();
-        //mailer.setMailer(mailSender);
+//        MailSender mailSender = new MailSender();
+//        mailer.setMailer(mailSender);
 //        System.out.println("about to run");
 //        mailer.sendMail();
 //        System.out.println("this will run immediately.");
